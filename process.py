@@ -28,4 +28,10 @@ df["内镜诊断_嗜酸"] = 内镜诊断_嗜酸.astype(int)
 df["内镜诊断_克罗恩"] = 内镜诊断_克罗恩.astype(int)
 df["内镜诊断_息肉"] = 内镜诊断_息肉.astype(int)
 
-df.sort_values(by=["姓名", "检查日期"]).to_excel("内镜诊断.xlsx", index=False)
+df.sort_values(by=["姓名", "检查日期"], inplace=True)
+df.to_excel("内镜诊断.xlsx", index=False)
+
+name_count = df.groupby("姓名")["姓名"].count() 
+dup_names = set(name_count[name_count > 1].index)
+df_dup = df[df["姓名"].isin(dup_names)] 
+df_dup.to_excel("复诊病人.xlsx", index=False)
